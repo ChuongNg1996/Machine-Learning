@@ -3,14 +3,16 @@
     * Email:            chuong19111996@gmail.com    
                         nguyenhoangkhanhchuong1996@gmail.com
     * File:             Linear Regression from scratch
-    * Description:      Linear Regression from scratch
+    * Description:      Linear Regression from scratch with simple model of
+                        y = theta_0 + theta_1*x
+                        where x has only one feature.
 %}
 
 %{
     * Key parts:
         (1) Import Data & Separate Dataset
         (2) Parameters
-        (3) Define Cost function
+        (3) Define Cost function (used in Gradient Descent, not used directly)
         (4) Define Gradient Descent function
         (5) Train Data
         (6) Test Model(s)
@@ -33,14 +35,14 @@ trainpt_num = round(datapt_num*ratio);  % Rounded number of training points
 % Training set
 x_train = x(1:trainpt_num);
 y_train = y(1:trainpt_num);
-figure
-plot(x_train,y_train);
+% figure
+% plot(x_train,y_train);
 
 % Validation set
 x_valid = x(trainpt_num+1:end);
 y_valid = y(trainpt_num+1:end);
-figure
-plot(x_valid,y_valid);
+% figure
+% plot(x_valid,y_valid);
 
 % Normalize Data
 
@@ -62,6 +64,24 @@ for k = 1:iteration_num
     param_old = param_new;
 end
 
+%% Test Model(s)
+y_new = zeros(length(y),1);
+for i = 1:length(x)
+    y_new(i) = param_new(1) + param_new(2)*x(i);
+end
+figure
+hold on
+plot(x,y)
+plot(x,y_new)
+hold off
+
+error = zeros(length(y),1);
+for i = 1:length(x)
+    error(i) = y(i) - y_new(i);
+end
+figure
+plot(error)
+
 %% Cost function
 
 % Original cost function (not used)
@@ -81,18 +101,21 @@ function J = cost_func_derivative(x,y,param,param_index)
     % J(theta_0,theta_1) = (1/(2*m))*sum[(h(x(i))-y)^2]
     J = 0;
     feature_size = length(x);
-    syms theta_0 theta_1 x y
-    h = theta_0 + theta_1*x;
-    J_part = (h - y)^2;
+    syms theta_0 theta_1 x_syms y_syms
+    h = theta_0 + theta_1*x_syms;
+    J_part = (h - y_syms)^2;
     
+    % Since J is derivative of a sum, we take derivate of each component of
+    % the sum insead, which is J_part, then sum them all
     if param_index == 0
         J_part = diff(J_part,theta_0);
     else
         J_part = diff(J_part,theta_1);
     end
     
+    % Sum for ALL data
     for i = 1:feature_size
-        J_part = subs(J_part,[theta_0,theta_1,x,y],[param(1),param(2),x(i),y(i)]);
+        J_part = subs(J_part,[theta_0,theta_1,x_syms,y_syms],[param(1),param(2),x(i),y(i)]);
         J = J + J_part;
     end
     J = J/feature_size;
@@ -103,5 +126,3 @@ function theta_j_new = gradient_descent(theta_j_old,rate,x,y,param,param_index)
     % theta_j_new = theta_j_old - rate*(dJ/dtheta_j)(theta)
     theta_j_new = theta_j_old - rate*cost_func_derivative(x,y,param,param_index);
 end
-
-
