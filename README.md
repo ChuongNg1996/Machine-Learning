@@ -8,4 +8,4 @@ Machine Learning Algorithm Storage
 
 * ```FF_BP_simple_1.m```: A simple FFNN with BP.  One feature input - One hidden layer with three neurons - One output at the output layer. Linear Activation (x1.0) at output layer.
 
-* ````FF_BP_one_hidden_var_neuron_1.m```:  A simple FFNN with BP.  One feature input - One hidden layer with user input neurons - One output at the output layer. Weights & Biases are either manually input or default Linear Activation (x1.0) at output layer.
+* ```FF_BP_one_hidden_var_neuron_1.m```:  A simple FFNN with BP.  One feature input - One hidden layer with user input neurons - One output at the output layer. Weights & Biases are either manually input or default Linear Activation (x1.0) at output layer.
