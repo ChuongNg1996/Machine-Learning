@@ -30,7 +30,7 @@ x = [xr1 xr2 xr3 xr4 xr5 xr6];
 y = [r(2:length(time)); r(length(time))];
 
 %% PSO
-pop_size = 1000;
+pop_size = 100;
 param_size = 4;
 
 %{
@@ -53,7 +53,7 @@ pbest_param = zeros(pop_size,param_size);
 gbest_fitness = Inf;
 gbest_param = zeros(1,param_size);
 
-iter=1000;
+iter=10000;
 w = 0.7;                % inertia coefficient
 c1 = 1.2;               % cognitive parameter (0 <= c1 <= 2)
 c2 = 1.2;               % social parameter (0 <= c2 <= 2)
